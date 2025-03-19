@@ -4,11 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DOM Challenges</title>
+    <style>
+      .highLightSomething {
+        background-color: yellow;
+        color: "#000";
+        font: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
     <section id="example">
       <h2>Accessing the DOM Elements</h2>
-      <p id="my-paragraph">This is the paragraph! click me to change me..</p>
+      <p id="my-paragraph">
+        This is the paragraph! click the button to change me..
+      </p>
+      <button id="button1">Change Text</button>
+    </section>
+    <section style="margin-top: 10px" class="listItemChanges">
+      <h2>Traversing the DOM</h2>
+      <ul class="listItemToHighLight">
+        <li>London</li>
+        <li>Tokyo</li>
+        <li>Paris</li>
+        <li>New York</li>
+      </ul>
+      <button id="highlightButton">Highlight First Child</button>
     </section>
     <script src="./script.js"></script>
   </body>
