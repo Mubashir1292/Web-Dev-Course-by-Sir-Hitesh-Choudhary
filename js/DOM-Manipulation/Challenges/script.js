@@ -31,3 +31,23 @@ document.getElementById("teaList").addEventListener("click", function (event) {
     alert(`You just triggered ${event.target.textContent}`);
   }
 });
+//! Question 8
+let resultParagraph = document.getElementById("resultParagraph");
+let feedBackForm = document.getElementById("feedbackForm");
+feedBackForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  resultParagraph.textContent = `Given Feedback : ${
+    document.getElementById("feedbackInputBox").value
+  }`;
+});
+//! Question 9
+let domConfirmation = document.getElementById("domConfirmation");
+document.addEventListener("DOMContentLoaded", function () {
+  domConfirmation.textContent = `DOM Content Loaded Successfully`;
+});
+//! Question 10
+document.getElementById("highLightV2").addEventListener("click", function () {
+  document
+    .getElementById("highLightSection")
+    .classList.toggle("highLightSomething");
+});

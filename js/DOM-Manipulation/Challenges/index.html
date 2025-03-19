@@ -9,9 +9,6 @@
         background-color: yellow;
         color: "#000";
         font: bold;
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
     </style>
   </head>
@@ -43,6 +40,24 @@
         <li class="teaItem">Oolong Tea</li>
         <li class="teaItem">Chai wali Tea</li>
       </ul>
+    </section>
+    <!--! Form Handling with Events  -->
+    <form id="feedbackForm">
+      <input
+        type="text"
+        name="feedback"
+        id="feedbackInputBox"
+        placeholder="Enter Some Text"
+      />
+      <button type="submit" id="submitBtn">submit</button>
+      <p id="resultParagraph"></p>
+    </form>
+    <section id="domLoaded">
+      <h2 id="domConfirmation"></h2>
+    </section>
+    <section id="highLightSection">
+      <h2 id="highLightTextArea">I will be High-Lighted</h2>
+      <button type="button" id="highLightV2">HighLight</button>
     </section>
     <script src="./script.js"></script>
   </body>
