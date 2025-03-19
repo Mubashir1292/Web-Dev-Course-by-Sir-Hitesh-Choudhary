@@ -15,3 +15,19 @@ let highLightButton = document.querySelector("#highlightButton");
 highLightButton.addEventListener("click", () => {
   completeList.firstElementChild.classList.add("highLightSomething");
 });
+// Question 5
+//? List Items
+let listItems = document.querySelector(".listItemToHighLight");
+document.getElementById("removeLastItem").addEventListener("click", () => {
+  if (listItems.childElementCount > 0) {
+    listItems.lastElementChild.remove();
+  } else {
+    console.log("No Items in List");
+  }
+});
+// Question 7 //! Event Delegation
+document.getElementById("teaList").addEventListener("click", function (event) {
+  if (event.target && event.target.matches(".teaItem")) {
+    alert(`You just triggered ${event.target.textContent}`);
+  }
+});
