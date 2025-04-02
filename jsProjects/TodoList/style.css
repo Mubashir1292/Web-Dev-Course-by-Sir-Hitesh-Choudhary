@@ -1,0 +1,74 @@
+body {
+  background-color: #000;
+  color: #fff;
+}
+.mainSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+}
+.mainSection:first-child div form {
+  background-color: #3e3e3e;
+  width: 400px;
+  height: auto;
+  padding: 5px 5px 5px 5px;
+}
+.mainSection:first-child div form h2 {
+  color: #fff;
+  text-align: center;
+  margin: 0;
+}
+.mainSection:first-child div input#item {
+  width: 60%;
+  height: 30px;
+  background-color: #727171;
+  border: none;
+  padding: 5px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+input::placeholder {
+  color: #e3e3e3;
+  font-size: 15px;
+}
+.mainSection:first-child div input[type="button"] {
+  width: 30%;
+  height: 35px;
+  margin-top: 10px;
+  cursor: pointer;
+  align-self: center;
+}
+#listItems {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+#listItems li {
+  color: #000;
+  width: 93%;
+  height: 30px;
+  background-color: burlywood;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+li button {
+  background-color: rgb(255, 11, 15);
+  border: none;
+  cursor: pointer;
+  color: #f9f9f9;
+  padding: 5px;
+  border-radius: 2px;
+  font-weight: 700;
+}
+.completed {
+  text-decoration: line-through;
+}
