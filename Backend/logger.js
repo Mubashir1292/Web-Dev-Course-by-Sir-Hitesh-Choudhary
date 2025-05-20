@@ -1,21 +1,24 @@
-//! this file generally tells us about the url details...
-import { createLogger,formate,level,transport, transports } from "winston";
-const {combine,timestamp,json,colorize} =formate;
+import {createLogger, format, transports} from "winston";
+const {combine, timestamp, json, colorize} = format;
 
-const customLogFormate=()=>{
-    formate.colorize();
-    formate.printf(({level,message,timestamp})=>{
-        return `${level}:${message} at ${timestamp}`;
-    })
-}
-const logger=createLogger({
-    level:"info",
-    format:combine(colorize(),timestamp,json()),
-    transports:[
-        new transport.Console({
-            formate:consoleLogFormate,
-        }),
-        new transports.File({filename:"app.log"}),
-    ]
+// Custom format for console logging with colors
+const consoleLogFormat = format.combine(
+  format.colorize(),
+  format.printf(({ level, message, timestamp }) => {
+    return `${level}: ${message}`;
+  })
+);
+
+// Create a Winston logger
+const logger = createLogger({
+  level: "info",
+  format: combine(colorize(), timestamp(), json()),
+  transports: [
+    new transports.Console({
+      format: consoleLogFormat,
+    }),
+    new transports.File({ filename: "app.log" }),
+  ],
 });
+
 export default logger;
