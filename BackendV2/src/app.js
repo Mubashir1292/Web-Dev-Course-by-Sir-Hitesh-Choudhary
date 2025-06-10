@@ -17,9 +17,10 @@ app.use(cookieParser());
 // import health-check-route
 import { healthCheck } from './controllers/healthcheck.controller.js';
 import cookieParser from 'cookie-parser';
+import {userRouter} from './routes/user.routes.js';
 
 //*use route
 app.use("/api/v1/healthcheck",healthCheck);
+app.use("/api/v1/users",userRouter);
 
-
-export {app}
+export {app};
