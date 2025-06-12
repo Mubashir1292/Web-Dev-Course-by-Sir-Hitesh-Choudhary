@@ -47,7 +47,7 @@ const UserSchema = new Schema(
             {
                 type: Schema.Types.ObjectId,
                 ref: "Video",
-                required: true,
+                required: false,
             }
         ],
         refreshToken: {
@@ -62,6 +62,7 @@ const UserSchema = new Schema(
         ],
         theme: {
             type: String,
+            default:"light",
             required: false
         },
         Notification: [
@@ -110,4 +111,4 @@ UserSchema.methods.generateRefreshToken=function(){
 )
 }
 
-export default User = mongoose.model("User", UserSchema);
+export const User = mongoose.model("User", UserSchema);
