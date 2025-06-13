@@ -8,7 +8,6 @@ const UserSchema = new Schema(
             required: true,
             unique: true,
             lowercase: true,
-            trim: true,
             index: true,
             specialletters: false,
         },
@@ -17,14 +16,12 @@ const UserSchema = new Schema(
             required: true,
             unique: true,
             lowercase: false,
-            trim: true,
             index: true,
             specialletters: true,
         },
         fullName: {
             type: String,
             required: true,
-            trim: true,
             index: true
         },
         coverImage: {
