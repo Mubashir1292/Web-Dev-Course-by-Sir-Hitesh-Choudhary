@@ -17,5 +17,4 @@ userRouter.route("/registerUser").post(
     },
     registerUser
 );
-console.log("into the user routes..");
 export  {userRouter};

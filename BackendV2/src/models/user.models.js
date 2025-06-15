@@ -50,25 +50,25 @@ const UserSchema = new Schema(
         refreshToken: {
             type: String,
         },
-        likedVideo: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Video",
-                required: false,
-            }
-        ],
-        theme: {
-            type: String,
-            default:"light",
-            required: false
-        },
-        Notification: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "notification",
-                required: false
-            }
-        ]
+        // likedVideo: [
+        //     {
+        //         type: Schema.Types.ObjectId,
+        //         ref: "Video",
+        //         required: false,
+        //     }
+        // ],
+        // theme: {
+        //     type: String,
+        //     default:"light",
+        //     required: false
+        // },
+        // Notification: [
+        //     {
+        //         type: Schema.Types.ObjectId,
+        //         ref: "notification",
+        //         required: false
+        //     }
+        // ]
     },
     {
         timestamps: true
