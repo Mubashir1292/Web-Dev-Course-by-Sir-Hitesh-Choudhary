@@ -21,4 +21,14 @@ const uploadOnCloudinary = async (localFilePath) => {
         return null;
     }
 }
-export { uploadOnCloudinary };
+
+//* when the error occurs the images might be uploaded so writing a method to delete those files and other stuff
+const deleteFromCloudinary=async(publicId)=>{
+    try{
+        await cloudinary.uploader.destroy(publicId);
+    }catch(error){
+        console.log("Error while deleting from the cloudinary..",error);
+        return null;
+    }
+}
+export { uploadOnCloudinary,deleteFromCloudinary };
