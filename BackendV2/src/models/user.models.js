@@ -49,26 +49,27 @@ const UserSchema = new Schema(
         ],
         refreshToken: {
             type: String,
+            required:false,
         },
-        // likedVideo: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: "Video",
-        //         required: false,
-        //     }
-        // ],
-        // theme: {
-        //     type: String,
-        //     default:"light",
-        //     required: false
-        // },
-        // Notification: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: "notification",
-        //         required: false
-        //     }
-        // ]
+        likedVideo: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Video",
+                required: false,
+            }
+        ],
+        theme: {
+            type: String,
+            default:"light",
+            required: false
+        },
+        Notification: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "notification",
+                required: false
+            }
+        ]
     },
     {
         timestamps: true
@@ -76,7 +77,7 @@ const UserSchema = new Schema(
 //* adding the methods to handle the password encryption...
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
-    this.password = bcrypt.hash(this.password, 10);
+    this.password =await bcrypt.hash(this.password, 10);
     next();
 })
 //? Matching the password is correct or not..
@@ -105,7 +106,7 @@ UserSchema.methods.generateRefreshToken=function(){
     },
     process.env.REFRESH_TOKEN_SECRET,
     {expiresIn:process.env.REFRESH_TOKEN_EXPIRY}
-)
+)   
 }
 
 export const User = mongoose.model("User", UserSchema);

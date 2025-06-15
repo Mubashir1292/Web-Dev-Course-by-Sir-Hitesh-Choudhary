@@ -3,7 +3,6 @@ class ApiError extends Error {
         super(message);
         this.statusCode = parseInt(statusCode);
         this.errors = errors;
-
         if (stack) {
             this.stack = stack;
         } else {
