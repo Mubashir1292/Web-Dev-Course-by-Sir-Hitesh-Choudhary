@@ -120,4 +120,22 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Something went wrong while registering a user and images were deleted..");
     }
 });
+// grabbing the access token and refresh token for the authentication..
+
+const generatingRefreshToken=async()=>{
+    try{
+
+    }catch(error){
+        console.log("Error while generating the Refresh Token for the user..");
+    }
+}
+const generatingAccessToken=async()=>{
+    try{
+        
+    }catch(error){
+        console.log("Access Token for the authentication...");
+    }
+}
+
+
 export default registerUser;
