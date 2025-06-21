@@ -9,7 +9,7 @@ app.use(
     })
 )
 // common middlewares...
-app.use(express.json({limit:"16kb"}));
+app.use(express.json({limit:"18kb"}));
 app.use(express.urlencoded({extended:true,limit:"20kb"}));
 app.use(express.static("public"))
 // cookies

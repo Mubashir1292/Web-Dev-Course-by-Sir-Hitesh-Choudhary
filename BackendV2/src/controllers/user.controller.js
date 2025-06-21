@@ -3,6 +3,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { User } from '../models/user.models.js';
 import { deleteFromCloudinary, uploadOnCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
+import jwt from 'jsonwebtoken';
 // const registerUser = asyncHandler(async (req, res) => {
 //     console.log("into the  controllers..");
 //     // getting all the data from the user.routes.js...
@@ -54,7 +55,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 //         new ApiResponse(201,"Newly User created....",createdUser)
 //     )
 // })
-    // till now we just add the some relevant things into the file.. 
+// till now we just add the some relevant things into the file.. 
 
 const registerUser = asyncHandler(async (req, res) => {
 
@@ -122,20 +123,114 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 // grabbing the access token and refresh token for the authentication..
 
-const generatingRefreshToken=async()=>{
-    try{
-
-    }catch(error){
-        console.log("Error while generating the Refresh Token for the user..");
+const generatingRefreshToken = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) throw new ApiError(404, "user Not founded");
+        //* nw moving to generate the access and refresh token..
+        const accessToken = await user.generateAccessToken();
+        const refreshToken = await user.generateRefreshToken();
+        user.refreshToken = refreshToken;
+        await user.save({ validateBefore: false });
+        return { accessToken, refreshToken };
+  } catch (error) {
+        throw new ApiError(500, "Something went wrong while generating the refresh tokens for the user");
     }
 }
-const generatingAccessToken=async()=>{
-    try{
-        
-    }catch(error){
-        console.log("Access Token for the authentication...");
+const loginUser = asyncHandler(async (req, res) => {
+    try {
+        // * getting the user params for login 
+        if(!req.body)
+            throw new ApiError(400,"Request body not founded");
+        const { email, password } = req.body;
+        //? validation
+        if ([email, password].some((field) => field.trim() === ""))
+            throw new ApiError(500, "All Fields must be filled..");
+        //? finding the user 
+        const user = await User.findOne({email});
+        if(!user) throw new ApiError(404,`User not Founded on this Email: ${email}`);
+
+        //* validate password..
+        const isPasswordValid = await user.isPasswordCorrect(password);
+        if(!isPasswordValid) throw new ApiError(401,"Invalid Credentials");
+
+        const {accessToken,refreshToken}=await generatingRefreshToken(user._id);
+
+        const loggedInUser = await User.findById(user._id)
+        .select("+password -refreshToken")
+        if(!loggedInUser) throw new ApiError(500,"Something went wrong on fetching the logged in user..");
+        // ? settings related to cookies
+        const options={
+            httpOnly:true,
+            secure:process.env.NODE_ENV==="production"
+        };
+
+        return res.status(200)
+        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,options)
+        .json(new ApiResponse(
+            200,
+            {user:loggedInUser,accessToken,refreshToken},
+            "User logged in successfully..."
+        ));
+
+    } catch (error) {
+        throw new ApiError(500, error || "Something went wrong while logging in the user..");
     }
-}
+})
+const logoutUser = asyncHandler(async (req,res)=>{
+    await User.findByIdAndUpdate(
+        //logging out the user means just have to delete the refresh token fromt eh database..
+        req.user._id,
+        {
+            $set:{
+                refreshToken:undefined
+            }
+        },{
+            new:true
+        }
+    )
+    const options={
+        httpOnly:true,
+        secure:process.env.NODE_ENV==="production"
+    }
+    return res.status(200)
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options)
+    .json(new ApiResponse(200,"User Logout Successfully"));
+})
+const refreshAccessToken=asyncHandler( async(req,res)=>{
+    try{
+        // just refreshing the old token by passing it to the database again..
+        //? getting the old refresh token
+        const incommingRefreshToken=req.cookies.refreshToken || req.body.refreshToken;
+        if(!incommingRefreshToken) throw new ApiError(401,"Refresh Token is required..");
+        //? have to verify the old refresh token..
+        const decodedToken=jwt.verify(incommingRefreshToken,process.env.REFRESH_TOKEN_SECRET);
+        const user= await User.findById(decodedToken?._id);
+        if(!user) throw new ApiError(404,"Invalid refresh Token");
+        //? just checking the refresh Token from the database
+        if(incommingRefreshToken!==user?.refreshToken) throw new ApiError(404,"Invalid Refresh Token");
+        const options={
+            httpOnly:true,
+            secure:process.env.NODE_ENV==="production"
+        };
+        const {accessToken,refreshToken:newRefreshToken}=await generatingRefreshToken(user._id);
+        return res.status(200)
+        .cookie("access Token",accessToken,options)
+        .cookie("refresh Token",refreshToken,options)
+        .json(new ApiResponse(200,{
+            accessToken,
+            refreshToken:newRefreshToken
+        },
+        "Access token refreshed succesfully.."
+    ));
+
+    }catch(error){
+        throw new ApiError(500,"Something went wrong while refreshing the refresh token");
+    }
+})
 
 
-export default registerUser;
+
+export { generatingRefreshToken,registerUser, loginUser,refreshAccessToken,logoutUser }; 

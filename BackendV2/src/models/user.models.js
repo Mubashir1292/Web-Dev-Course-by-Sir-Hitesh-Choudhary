@@ -82,8 +82,9 @@ UserSchema.pre("save", async function (next) {
 })
 //? Matching the password is correct or not..
 UserSchema.methods.isPasswordCorrect = async function(password){
-    if(!password) return false;
-    return await bcrypt.compare(password,this.password);
+    if(!password) return new Error("Password is required");
+    const userWithPassword = await User.findById(this._id).select('+password');
+    return await bcrypt.compare(password, userWithPassword.password);
 }
 //* json web tokens..
 UserSchema.methods.generateAccessToken = function (){
