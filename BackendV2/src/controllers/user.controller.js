@@ -261,12 +261,53 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, user, "Account details updated Successfully.."));
 });
 const updateUserAvatar = asyncHandler(async (req, res) => {
-    
+    if (!req.files) throw new ApiError(400, "Avatar file is required..");
+    const avatarLocalPath = req.file?.path;
+    //? this avatar local path is comming from the multer..
+    if (!avatarLocalPath) throw new ApiError(400, "Avatar file path is missing..");
+    const avatarImage = await uploadOnCloudinary(avatarLocalPath);
+    if (!avatarImage.url) throw new ApiError(400, "Something went wrong while updating the avatar");
+    //? updating the user's avatar by passing the user._id and avatar file path..
+    const avatarUpdating = await User.findByIdAndUpdate(
+        req?.user._id,
+        {
+            $set: {
+                avatar: avatarImage.url
+            }
+        },
+        { new: true }
+    ).select("-password -refreshToken");
+
+    return res.status(204).json(new ApiResponse(204, avatarUpdating, "Avatar File Updated Successfully"));
+
 });
 const updateUserCoverImage = asyncHandler(async (req, res) => {
-
+    if (!req.files) throw new ApiError(400, "Request files are missing..");
+    const coverImagePath = req.file.path;
+    if (!coverImagePath) throw new ApiError(400, "Cover Image path is missing");
+    const coverImageUpdating = await User.findByIdAndUpdate(
+        req?.user._id,
+        {
+            $set: {
+                coverImage: coverImage.url
+            }
+        },
+        { new: true }
+    ).select("-password -refreshToken");
+    return res.status(204).json(new ApiResponse(204, coverImageUpdating, "Cover Image Updated Successfully.."));
 });
 
 
 
-export { generatingRefreshToken, registerUser, loginUser, refreshAccessToken, logoutUser }; 
+export {
+    generatingRefreshToken,
+    registerUser,
+    loginUser,
+    refreshAccessToken,
+    logoutUser,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage,
+    getCurrentUser,
+    changePassword
+}; 
