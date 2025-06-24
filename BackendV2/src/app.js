@@ -12,6 +12,7 @@ app.use(
 app.use(express.json({limit:"18kb"}));
 app.use(express.urlencoded({extended:true,limit:"20kb"}));
 app.use(express.static("public"))
+app.use(logger());
 // cookies
 app.use(cookieParser());
 // import health-check-route
@@ -19,6 +20,7 @@ import { healthCheck } from './controllers/healthcheck.controller.js';
 import cookieParser from 'cookie-parser';
 import {userRouter} from './routes/user.routes.js';
 import { errorHandler } from './middlewares/error.middlewares.js';
+import logger from './middlewares/logger.middlewares.js';
 
 //*use route
 app.use("/api/v1/healthcheck",healthCheck); 

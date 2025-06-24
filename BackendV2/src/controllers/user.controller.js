@@ -122,7 +122,6 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 // grabbing the access token and refresh token for the authentication..
-
 const generatingRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId);
@@ -296,8 +295,24 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     ).select("-password -refreshToken");
     return res.status(204).json(new ApiResponse(204, coverImageUpdating, "Cover Image Updated Successfully.."));
 });
-
-
+//! we are expecting to solve the issue and other handlers as well
+const getUserChannelProfile = asyncHandler( async(req,res)=>{
+    if(!req.params) throw new ApiError(400,"Request parameters are missing");
+    const {userName}=req.params;
+    const channel = await User.aggregate([
+        {
+            //? This is the aggregation piplines where we just perform the methodologies..
+            $match:{
+                username:userName.toLowerCase()
+            }
+        },
+        {
+            $lookup:{
+                from:""
+            }
+        }
+    ])
+})
 
 export {
     generatingRefreshToken,
