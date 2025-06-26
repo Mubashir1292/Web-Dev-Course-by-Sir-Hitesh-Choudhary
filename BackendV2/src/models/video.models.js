@@ -2,8 +2,8 @@ import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 const VideoSchema = new Schema({
     videoFile: {
-        type: [true, "Video file is required.."],
-        required: true,
+        type: String,
+        required: [true,"Video file is required..."],
     },
     thumbnail: {
         type: String,
@@ -24,31 +24,26 @@ const VideoSchema = new Schema({
         type: String,
         required: false,
     },
-    duration: {
-        type: Number,
-        required: false,
-    },
     views: {
         type: Number,
         default: 0
     },
     shares: {
         type: Number,
+        default:0,
     },
     isPublished: {
         type: Boolean,
         required: [true, "Public or Private"]
     },
-    madeForKids: {
-        type: Boolean,
-        required: [true, "Made for Kids ?"]
-    },
-    filters: {
+    filters: [
+        {
         type: String,
-        required: [true, "Select At-least One"],
+        required: [true, "Several Filters"],
         Select: true,
         index: true
-    },
+        }
+    ],
     keyMoments: [
         {
             type: String,
@@ -60,10 +55,6 @@ const VideoSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: false,
         ref: "User"
-    },
-    isPrivate: {
-        type: Boolean,
-        required: true
     },
 },
     { timestamps: true }

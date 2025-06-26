@@ -1,13 +1,28 @@
 export default function logger(req, res, next) {
     const start = Date.now();
-    const body = req.body;
-    const query = req.query;
-    const headers = req.headers;
-    const method = req.method;
-    const url = req.url;
+
+    const { query, headers, method, url } = req;
+    const body = req.body || {};
     res.on("finish", () => {
         const duration = Date.now() - start;
-        console.log(`Request Body:${body},Search Query :${query},Request Headers:${headers},total Request Duration:${duration},Request Method:${method},Request URL:${url}`);
-    })
+        const { statusCode } = res;
+        const logData = {
+            timestamp: new Date().toISOString(),
+            method,
+            url,
+            statusCode,
+            duration: `${duration}ms`,
+            query: Object.keys(query).length ? query : undefined,
+            body: Object.keys(body).length ? body : undefined,
+            headers: {
+                'user-agent': headers['user-agent'],
+                referer: headers['referer'],
+                // Add other headers you want to log
+            }
+        };
+        
+        console.log('Request Log:', JSON.stringify(logData, null, 2));
+    });
+    
     next();
 }
