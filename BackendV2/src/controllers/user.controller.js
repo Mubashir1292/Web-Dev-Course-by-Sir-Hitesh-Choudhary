@@ -301,15 +301,13 @@ const getUserChannelProfile = asyncHandler( async(req,res)=>{
     const {userName}=req.params;
     const channel = await User.aggregate([
         {
-            //? This is the aggregation piplines where we just perform the methodologies..
+            
             $match:{
                 username:userName.toLowerCase()
             }
         },
         {
-            $lookup:{
-                from:""
-            }
+
         }
     ])
 })

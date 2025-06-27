@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { uploadVideo } from "../controllers/video.controller.js";
-import { upload } from "../middlewares/multer.middlewares.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { upload } from "../middlewares/multer.middlewares.js";
 const videoRouter = Router();
 videoRouter.route("/uploadVideo").post(
     upload.fields([

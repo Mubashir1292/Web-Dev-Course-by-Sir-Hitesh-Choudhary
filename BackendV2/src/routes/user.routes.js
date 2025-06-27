@@ -2,6 +2,7 @@ import { Router } from "express";
 import {registerUser,logoutUser, loginUser}  from '../controllers/user.controller.js';
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const userRouter = Router();
 userRouter.route("/registerUser").post(
