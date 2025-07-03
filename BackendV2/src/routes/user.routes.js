@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {registerUser,logoutUser, loginUser}  from '../controllers/user.controller.js';
+import {registerUser,logoutUser, loginUser, getUserChannelProfile}  from '../controllers/user.controller.js';
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -22,4 +22,5 @@ userRouter.route("/registerUser").post(
 userRouter.route("/login").post(loginUser);
 //* secure routes for users
 userRouter.route("/logout").post(verifyJWT,logoutUser);
+userRouter.route('/userChannel/:username').get(getUserChannelProfile);
 export  {userRouter};

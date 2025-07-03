@@ -13,6 +13,7 @@ const errorHandler = (err, req, res, next) => {
             error.status || "success"
             (error instanceof mongoose.Error ? 400 : 500);
         
+            
         const message = error.message || "Something went wrong";
         error = new ApiError(
             parseInt(statusCode), 

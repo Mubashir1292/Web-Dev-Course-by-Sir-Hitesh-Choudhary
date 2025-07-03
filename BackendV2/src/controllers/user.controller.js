@@ -4,6 +4,7 @@ import { User } from '../models/user.models.js';
 import { deleteFromCloudinary, uploadOnCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 // const registerUser = asyncHandler(async (req, res) => {
 //     console.log("into the  controllers..");
 //     // getting all the data from the user.routes.js...
@@ -301,15 +302,26 @@ const getUserChannelProfile = asyncHandler( async(req,res)=>{
     const {userName}=req.params;
     const channel = await User.aggregate([
         {
-            
             $match:{
-                username:userName.toLowerCase()
+                username:userName
             }
         },
         {
-
+            $lookup:{
+                from:"videos",
+                localField:"_id",
+                foreignField:"owner",
+                as:"channel_videos"
+            }
+        },
+        {
+            $unwind:{
+                path:"$videos",
+                preserveNullAndEmptyArrays:true
+            }
         }
-    ])
+    ]);
+    res.status(200).json(channel);
 })
 
 export {
@@ -322,5 +334,6 @@ export {
     updateUserAvatar,
     updateUserCoverImage,
     getCurrentUser,
-    changePassword
+    changePassword,
+    getUserChannelProfile
 }; 
