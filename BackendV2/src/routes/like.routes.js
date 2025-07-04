@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createLike } from "../controllers/like.controller.js";
+import { toggleLike } from "../controllers/like.controller.js";
 const LikeRouter = Router();
-LikeRouter.route("/createLike").post(createLike);
+LikeRouter.route("/toggleLike").post(toggleLike);
 export {LikeRouter};
