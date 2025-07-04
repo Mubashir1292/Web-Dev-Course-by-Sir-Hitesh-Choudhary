@@ -23,12 +23,14 @@ import { errorHandler } from './middlewares/error.middlewares.js';
 import logger from './middlewares/logger.middlewares.js';
 import { videoRouter } from './routes/video.routes.js';
 import {commentRouter} from './routes/comment.routes.js';
+import { LikeRouter } from './routes/like.routes.js';
 
 //*use route
 app.use("/api/v1/healthcheck",healthCheck); 
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/video",videoRouter);
 app.use("/api/v1/video",commentRouter);
+app.use("/api/v1/like",LikeRouter);
 // error handling middleware at the last..
 app.use(errorHandler);
 export {app};
