@@ -36,7 +36,7 @@ app.use("/api/v1/video",commentRouter);
 app.use("/api/v1/like",LikeRouter);
 app.use("/api/v1/dislike",dislikeRouter);
 app.use("/api/v1/subscription",subscriptionRouter);
-app.use("/api/v1/notification",notificationRouter)
+app.use("/api/v1/notification",notificationRouter);
 // error handling middleware at the last..
 app.use(errorHandler);
 export {app};

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { createNotification } from "../controllers/notification.controller.js";
+import {  notifiNewCommentOnVideo, notifyNewVideoUpload } from "../controllers/notification.controller.js";
 const notificationRouter = Router();
-notificationRouter.route("/createNotification").post(createNotification);
+notificationRouter.route("/notifySubscribers").get(notifyNewVideoUpload);
+notificationRouter.route("/notifiVideoOwnerOnNewComment").post(notifiNewCommentOnVideo);
 export {notificationRouter};
