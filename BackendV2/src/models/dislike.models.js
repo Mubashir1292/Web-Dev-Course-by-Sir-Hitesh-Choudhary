@@ -1,19 +1,31 @@
 import mongoose from "mongoose";
 const dislikeSchema = new mongoose.Schema({
-    user:{
-        type:mongoose.Types.ObjectId,
-        required:true,
-        ref:'User'
+    user: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'User'
     },
-    likeable:{
-        type:mongoose.Types.ObjectId,
-        required:true,
-        ref:'likeAbleModel'
+    dislikeAble: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'dislikeAbleModel'
     },
-    likeAbleModel:{
-        type:String,
-        required:true,
-        enum:['video','comment']
+    dislikeAbleModel: {
+        type: String,
+        required: true,
+        enum: ['video', 'comment']
     }
 },
-{timestamps:true});
+    { timestamps: true },);
+
+dislikeSchema.index({
+    user: 1,
+    dislikeAble: 1,
+    dislikeAbleModel: 1
+},
+    {
+        unique: true,
+        name: 'unique_dislike'
+    }
+);
+export const dislike = mongoose.model("dislike",dislikeSchema);

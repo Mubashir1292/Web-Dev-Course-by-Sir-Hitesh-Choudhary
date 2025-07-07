@@ -15,4 +15,11 @@ const subscriptionModel = new Schema({
         timestamps: true
     }
 );
+subscriptionModel.index({
+    subscriber:1,
+    channel:1
+},{
+    unique:true,
+    "name":"unique_subscription"
+});
 export const subscription=mongoose.model("subscription",subscriptionModel);
